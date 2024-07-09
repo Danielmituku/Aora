@@ -1,5 +1,6 @@
 const express = require('express');
 const dbConnect = require('./dbConnect/dbConnection');
+const routes = require('./routes/route.js');
 const App = express ();
 
 App.use('/', routes)
