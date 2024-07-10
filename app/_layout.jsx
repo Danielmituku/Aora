@@ -1,20 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import { slot } from 'expo-router';
 
-export default function App() {
+const RootLayout = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={styles.contianer}>
+      <Text>RootLayout</Text>
     </View>
-  );
+  )
 }
 
+export default RootLayout
+
 const styles = StyleSheet.create({
-  container: {
+  contianer:{
+    display:"flex",
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    justifyContent: 'center'
+
+  }
+})
