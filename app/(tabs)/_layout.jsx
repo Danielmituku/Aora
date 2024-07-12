@@ -1,9 +1,11 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React from 'react'
-import { Tabs } from 'expo-router';
+import { Tabs, Redirect} from 'expo-router';
+
+import { icons } from '../../constants'
 
 
-const TabIcon = ({color, icon, name, focused}) =>{
+const TabIcon = ({ icon, color ,name, focused}) =>{
  return(
     <View className="items-center justify-center gap-2">
         <Image
@@ -21,19 +23,16 @@ const TabIcon = ({color, icon, name, focused}) =>{
 const TabsLayout = () => {
   return (
    <Tabs 
-   screenOptions = {{
-    tabBarShowLabel: false,
-    tabBarActiveTintColor:'#FFA001',
-    tabBarInactiveTintColor: '#CDCDE0',
-    tabBarStyle:{
-        backgroundColor: '#161622',
-        borderTopWidth: 1,
-        borderTopColor: '#3232533',
-        height: 84,
-    }
-}}
->
-
+        screenOptions = {{
+            tabBarShowLabel: false,
+            tabBarActiveTintColor:'#FFA001',
+            tabBarInactiveTintColor: '#CDCDE0',
+            tabBarStyle:{
+                backgroundColor: '#161622',
+                borderTopWidth: 1,
+                borderTopColor: '#3232533',
+                height: 84,
+    }}}>
 
      <Tabs.Screen 
         name="home"
@@ -42,13 +41,55 @@ const TabsLayout = () => {
             headerShown: false,
             tabBarIcon: ({color, focused}) => (
                 <TabIcon 
-                icon={icon.home}
+                icon={icons.home}
                 name="Home"
-
+                color={color}
+                focused={focused}
              />
-            )
+            )}}/>
 
-        }}/>
+    <Tabs.Screen 
+        name="bookmark"
+        options={{
+            title: "bookmark",
+            headerShown: false,
+            tabBarIcon: ({color, focused}) => (
+                <TabIcon 
+                icon={icons.bookmark}
+                name="Bookmark"
+                color={color}
+                focused={focused}
+             />
+            )}}/>
+
+    <Tabs.Screen 
+            name="create"
+            options={{
+                title: "Create",
+                headerShown: false,
+                tabBarIcon: ({color, focused}) => (
+                    <TabIcon 
+                    icon={icons.plus}
+                    name="Create"
+                    color={color}
+                    focused={focused}
+                 />
+                )}}/>
+
+        <Tabs.Screen 
+                name="profile"
+                options={{
+                    title: "Profile",
+                    headerShown: false,
+                    tabBarIcon: ({color, focused}) => (
+                        <TabIcon 
+                        icon={icons.profile}
+                        name="Profile"
+                        color={color}
+                        focused={focused}
+                     />
+                    )}}/>
+
    </Tabs>
   )
 }
