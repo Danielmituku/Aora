@@ -50,7 +50,7 @@ const SignUp = () => {
           /> 
  
           <CustomButton
-          title="Sing Up"
+          title="Sign Up"
           handlePress= {submit}
           contianerStyles='mt-7'
           isLoading={isSubmitting}
