@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -19,8 +19,25 @@ const SignUp = () => {
 
   const [isSubmitting, setIsSumbitting] = useState(false)
 
-  const submit= () => {
-    createUser();
+  const submit= async () => {
+    if(!form.username || !form.email || !form.password){
+      Alert.alert('Error', 'Please fill in all the fields')
+    }
+
+    setIsSumbitting(true);
+
+    try{
+      const result = await createUser(form.email, form.password, form.username)
+
+    // set it to the global state...
+
+    router.replace('/home')
+
+    } catch(error){
+      Alert.alert("Error", error.message)
+    } finally{
+      setIsSumbitting(false)
+    }
    }
 
 
@@ -29,7 +46,7 @@ const SignUp = () => {
       <ScrollView>
         <View className="w-full justify-center min-h-[85vh] px-4 my-6">
           <Image source={images.logo} resizeMode="contain"
-          className="w-[115px] h-[35px]"/>
+            className="w-[115px] h-[35px]"/>
 
           <Text className="text-2xl text-white mt-10 font-psemibod">Sign up to Aora</Text>
 
@@ -56,10 +73,10 @@ const SignUp = () => {
           /> 
  
           <CustomButton
-          title="Sign Up"
-          handlePress= {submit}
-          contianerStyles='mt-7'
-          isLoading={isSubmitting}
+            title="Sign Up"
+            handlePress= {submit}
+            contianerStyles='mt-7'
+            isLoading={isSubmitting}
           />
 
           <View className="justify-center pt-5 flex-row gap-2">

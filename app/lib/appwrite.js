@@ -23,6 +23,7 @@ const account = new Account(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
 
+
 // Register User
 export const createUser = async (email, password, username) => {
  try {
@@ -30,7 +31,7 @@ export const createUser = async (email, password, username) => {
         ID.unique(), email, password, username
     )
     if(! newAccount) throw Error;
-    const avatarURL = avatars.getInitials(username);
+    const avatarUrl = avatars.getInitials(username);
 
     await signIn(email, password);
 
@@ -39,9 +40,10 @@ export const createUser = async (email, password, username) => {
         config.userCollectionId,
         ID.unique(),
         {
-            accountId: newAccount.$id,
+            accountId: newAccount.$id, 
+            email,
             username,
-            avatar: avatarURL
+            avatar: avatarUrl
         }
     )
     return newUser;
@@ -55,7 +57,8 @@ export const createUser = async (email, password, username) => {
 
 export async function signIn(email, password){
     try {
-        const session = await account.createEmailSession(email, password)
+        const session = await account.createEmailPasswordSession(email, password)
+        return session;
     } catch (error) {
         throw new Error(error);
     }
