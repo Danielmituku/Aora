@@ -1,4 +1,6 @@
+// 
 import { Client, Account, ID, Avatars, Databases } from 'react-native-appwrite';
+import React, { useState } from "react";
 
 export const config = {
     endpoint: 'https://cloud.appwrite.io/v1',
@@ -10,29 +12,30 @@ export const config = {
     storageId: '66922a20003e5c328ee0'
 }
 
-
 const client = new Client();
 
 client
-    .setEndpoint(config.endpoint) // Your Appwrite Endpoint
-    .setProject(config.projectId) // Your project ID
-    .setPlatform(config.platform) // Your application ID or bundle ID.
-;
+    .setEndpoint(config.endpoint) 
+    .setProject(config.projectId) 
+    .setPlatform(config.platform); 
 
 const account = new Account(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
 
-
-// Register User
 export const createUser = async (email, password, username) => {
  try {
-    const newAccount = await account.create(
-        ID.unique(), email, password, username
-    )
-    if(! newAccount) throw Error;
-    const avatarUrl = avatars.getInitials(username);
 
+    const newAccount = await account.create( 
+        ID.unique(), 
+        email, 
+        password, 
+        username );
+
+    if (!newAccount) throw new Error("Account creation failed");
+
+    const avatarUrl = avatars.getInitials(username);
+    
     await signIn(email, password);
 
     const newUser = await databases.createDocument(
@@ -40,26 +43,29 @@ export const createUser = async (email, password, username) => {
         config.userCollectionId,
         ID.unique(),
         {
-            accountId: newAccount.$id, 
+            account_id: newAccount.$id,
             email,
             username,
             avatar: avatarUrl
         }
-    )
+    );
+
     return newUser;
- } 
- 
- catch (error) {
-    console.log(error)
-    throw new Error(error);
+
+ } catch (error) {
+    console.error(error);
+    throw new Error(error.message);
  }
 }
 
-export async function signIn(email, password){
+
+export async function signIn(email, password) {
     try {
-        const session = await account.createEmailPasswordSession(email, password)
+
+        const session = await account.createEmailPasswordSession(email, password);
         return session;
+
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 }
