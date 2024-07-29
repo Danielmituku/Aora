@@ -1,23 +1,54 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import {images} from '../../constants';
 import FormField from '../components/FormField';
 import CustomButton from '../components/CustomButton';
+import signIn from '../lib/appwrite';
+import { Link, useRouter } from 'expo-router';
 
-import { Link } from 'expo-router';
 
 const SignIn = () => {
   const [form, setForm] = useState({
     email: '',
     password: ''
   })
+  const router = useRouter();
+  const isValidEmail = (email) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  };
 
-  const [isSubmitting, setIsSumbitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const submit= () => {
-  }
+  const submit = async () => {
+    
+    if (!form.email || !form.password) {
+      Alert.alert('Error', 'Please fill in all the fields');
+      return;
+    }
+
+    if (!isValidEmail(form.email)) {
+      Alert.alert('Error', 'Please enter a valid email address');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await signIn(form.email, form.password);
+      
+      
+      router.replace('/home');
+      
+    } catch (error) {
+
+      Alert.alert("Error", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <SafeAreaView className = "bg-primary h-full">
@@ -44,10 +75,10 @@ const SignIn = () => {
           /> 
  
           <CustomButton
-          title="Log In"
-          handlePress= {submit}
-          contianerStyles='mt-7'
-          isLoading={isSubmitting}
+            title="Log In"
+            handlePress= {submit}
+            contianerStyles='mt-7'
+            isLoading={isSubmitting}
           />
 
           <View className="justify-center pt-5 flex-row gap-2">
@@ -58,7 +89,6 @@ const SignIn = () => {
           </View>
         </View>
       </ScrollView>
-
 
     </SafeAreaView>
   )
