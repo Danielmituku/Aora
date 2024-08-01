@@ -1,20 +1,33 @@
-import { View, Text } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import React from 'react'
-import { FlatList, SafeAreaView } from 'react-native-web'
 
 const Home = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView className="bg-primary">
         <FlatList 
-          data={[]}
-          keyExtractor ={ item => item.$id}
-          renderItem = {({item})=>{
-            <Text className>{item.id}</Text>
+          data={[{ id: 1}, { id: 2}, {id: 3}]}
+          keyExtractor= { item => item.$id}
+          renderItem={({item}) =>{
+            <Text className="text-3xl">{item.id} home</Text>
           }}
-        
+          ListHeaderComponent={()=>{
+            <View className= "my-6 px-4 space-y-6">
+              <View className="justify-between items-start flex-row mb-6">
+                <View>
+                  <Text className="font-pmedium text-sm text-gray-100">
+                    Welcome Back!!
+                  </Text>
+                  <Text className="text-2xl font-psemibold text-white">
+                    Aora
+                  </Text>
+                </View>
+              </View>
+            </View>
+          }}
         />
     </SafeAreaView>
   )
 }
 
-export default Home
+export default Home;
